@@ -1,0 +1,458 @@
+Student Name
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController c = TextEditingController();
+  String name = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: c, decoration: InputDecoration(labelText: "Name")),
+        ElevatedButton(
+          onPressed: () => setState(() => name = c.text),
+          child: Text("Display"),
+        ),
+        Text(name)
+      ],
+    ),
+  );
+}
+
+Output: Enter name → Abdul Malik
+
+2. Sum of Two Numbers
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
+  String result = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: a),
+        TextField(controller: b),
+        ElevatedButton(
+          onPressed: () => setState(() =>
+            result = "${double.parse(a.text) + double.parse(b.text)}"),
+          child: Text("Add"),
+        ),
+        Text(result)
+      ],
+    ),
+  );
+}
+
+Output: 10 + 20 = 30
+
+3. Calculator
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
+  String r = "";
+
+  void calc(String op) {
+    double x = double.parse(a.text), y = double.parse(b.text);
+    setState(() => r = op == "+" ? "${x + y}" :
+        op == "-" ? "${x - y}" :
+        op == "*" ? "${x * y}" : "${x / y}");
+  }
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: a),
+        TextField(controller: b),
+        Row(
+          children: [
+            ElevatedButton(onPressed: () => calc("+"), child: Text("+")),
+            ElevatedButton(onPressed: () => calc("-"), child: Text("-")),
+            ElevatedButton(onPressed: () => calc("*"), child: Text("*")),
+            ElevatedButton(onPressed: () => calc("/"), child: Text("/")),
+          ],
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: 10 + 5 = 15
+
+4. Change Text
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String text = "Hello";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text(text),
+          ElevatedButton(
+            onPressed: () => setState(() => text = "Button Pressed"),
+            child: Text("Click"),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Output: Button Pressed
+
+5. SnackBar
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: Center(
+    child: Builder(builder: (context) => ElevatedButton(
+      onPressed: () => ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Hello!"))),
+      child: Text("Click"),
+    )),
+  ),
+)));
+
+Output: SnackBar → Hello!
+
+6. Submit and Reset
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController c = TextEditingController();
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: c),
+        ElevatedButton(onPressed: () {}, child: Text("Submit")),
+        ElevatedButton(
+          onPressed: () => c.clear(),
+          child: Text("Reset"),
+        )
+      ],
+    ),
+  );
+}
+
+Output: Form with Submit and Reset buttons.
+
+7. Total Marks
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
+  TextEditingController c = TextEditingController();
+  String total = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: a, decoration: InputDecoration(labelText: "Name")),
+        TextField(controller: b),
+        TextField(controller: c),
+        TextField(controller: TextEditingController()),
+        ElevatedButton(
+          onPressed: () => setState(() =>
+            total = "${double.parse(b.text) + double.parse(c.text)}"),
+          child: Text("Total"),
+        ),
+        Text(total)
+      ],
+    ),
+  );
+}
+
+Output: Total marks displayed.
+
+8. Percentage
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController a = TextEditingController();
+  TextEditingController b = TextEditingController();
+  TextEditingController c = TextEditingController();
+  String r = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: a),
+        TextField(controller: b),
+        TextField(controller: c),
+        ElevatedButton(
+          onPressed: () => setState(() => r =
+            "${(double.parse(a.text) + double.parse(b.text) + double.parse(c.text)) / 3}%"),
+          child: Text("Calculate"),
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: 80%
+
+9. Even or Odd
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController c = TextEditingController();
+  String r = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: c),
+        ElevatedButton(
+          onPressed: () => setState(() =>
+            r = int.parse(c.text) % 2 == 0 ? "Even" : "Odd"),
+          child: Text("Check"),
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: 8 → Even
+
+10. Positive, Negative or Zero
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController c = TextEditingController();
+  String r = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: c),
+        ElevatedButton(
+          onPressed: () => setState(() {
+            int n = int.parse(c.text);
+            r = n > 0 ? "Positive" : n < 0 ? "Negative" : "Zero";
+          }),
+          child: Text("Check"),
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: -5 → Negative
+
+11. Celsius to Fahrenheit
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController c = TextEditingController();
+  String r = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: c),
+        ElevatedButton(
+          onPressed: () => setState(() =>
+            r = "${double.parse(c.text) * 9 / 5 + 32} °F"),
+          child: Text("Convert"),
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: 25°C → 77°F
+
+12. Rectangle Area
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController l = TextEditingController();
+  TextEditingController w = TextEditingController();
+  String r = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: l),
+        TextField(controller: w),
+        ElevatedButton(
+          onPressed: () => setState(() =>
+            r = "${double.parse(l.text) * double.parse(w.text)}"),
+          child: Text("Area"),
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: 10 × 5 = 50
+
+13. BMI Calculator
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController h = TextEditingController();
+  TextEditingController w = TextEditingController();
+  String r = "";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: h, decoration: InputDecoration(labelText: "Height (m)")),
+        TextField(controller: w, decoration: InputDecoration(labelText: "Weight (kg)")),
+        ElevatedButton(
+          onPressed: () => setState(() =>
+            r = "BMI: ${double.parse(w.text) / (double.parse(h.text) * double.parse(h.text))}"),
+          child: Text("Calculate"),
+        ),
+        Text(r)
+      ],
+    ),
+  );
+}
+
+Output: BMI: 22.86
+
+14. Checkbox
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool agree = false;
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: CheckboxListTile(
+        title: Text("I agree to terms"),
+        value: agree,
+        onChanged: (v) => setState(() => agree = v!),
+      ),
+    ),
+  );
+}
+
+Output: ☑ I agree to terms
+
+15. Radio Buttons
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String gender = "Male";
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        RadioListTile(
+          title: Text("Male"),
+          value: "Male",
+          groupValue: gender,
+          onChanged: (v) => setState(() => gender = v!),
+        ),
+        RadioListTile(
+          title: Text("Female"),
+          value: "Female",
+          groupValue: gender,
+          onChanged: (v) => setState(() => gender = v!),
+        ),
+      ],
+    ),
+  );
+}
+
+Output: Male / Female radio buttons.
