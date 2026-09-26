@@ -1,0 +1,303 @@
+1. Hello Flutter
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(child: Text("Hello Flutter")),
+  ),
+));
+
+Output: Hello Flutter
+
+2. Student Details
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text("Abdul Malik"),
+          Text("BCA"),
+          Text("5th Semester"),
+          Text("COER University"),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output:
+
+Abdul Malik
+BCA
+5th Semester
+COER University
+3. Text Styles
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text("Bold", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("Italic", style: TextStyle(fontStyle: FontStyle.italic)),
+          Text("Large", style: TextStyle(fontSize: 30)),
+          Text("Center", textAlign: TextAlign.center),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output: Bold, Italic, Large and Center text.
+
+4. Image
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Image.asset("assets/photo.jpg", width: 200),
+    ),
+  ),
+));
+
+Output: Image displayed.
+
+5. Icons
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.home),
+        Icon(Icons.favorite),
+        Icon(Icons.person),
+      ],
+    ),
+  ),
+));
+
+Output: Home, Favorite and Person icons.
+
+6. Text + Image + Icon
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text("My Profile"),
+          Image.asset("assets/photo.jpg", width: 120),
+          Icon(Icons.person, size: 40),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output: Text, image and icon displayed.
+
+7. Container
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Container(
+        width: 200,
+        height: 100,
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(color: Colors.blue),
+        child: Text("Container"),
+      ),
+    ),
+  ),
+));
+
+Output: Blue customized container.
+
+8. Row
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Home "),
+          Text("About "),
+          Text("Contact"),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output:
+
+Home About Contact
+9. Column
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text("Home"),
+          Text("About"),
+          Text("Contact"),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output:
+
+Home
+About
+Contact
+10. Three Buttons
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Row(
+        children: [
+          ElevatedButton(onPressed: () {}, child: Text("Submit")),
+          ElevatedButton(onPressed: () {}, child: Text("Reset")),
+          ElevatedButton(onPressed: () {}, child: Text("Cancel")),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output: Submit, Reset and Cancel buttons.
+
+11. Student Profile Card
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Container(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset("assets/photo.jpg", width: 100),
+            Text("Abdul Malik"),
+            Text("BCA 5th Semester"),
+            Icon(Icons.school),
+          ],
+        ),
+      ),
+    ),
+  ),
+));
+
+Output: Student profile card.
+
+12. Business Card
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Image.asset("assets/photo.jpg", width: 100),
+          Text("Abdul Malik"),
+          Text("Phone: 9876543210"),
+          Text("Email: abdul@gmail.com"),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output: Business card with name, phone, email and image.
+
+13. Login Screen
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    appBar: AppBar(title: Text("Login")),
+    body: Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Image.asset("assets/photo.jpg", width: 100),
+          TextField(decoration: InputDecoration(labelText: "Email")),
+          TextField(decoration: InputDecoration(labelText: "Password")),
+          ElevatedButton(onPressed: () {}, child: Text("Login")),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output: Login screen.
+
+14. Registration Screen
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    appBar: AppBar(title: Text("Registration")),
+    body: Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          TextField(decoration: InputDecoration(labelText: "Name")),
+          TextField(decoration: InputDecoration(labelText: "Email")),
+          TextField(decoration: InputDecoration(labelText: "Password")),
+          ElevatedButton(onPressed: () {}, child: Text("Register")),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output: Registration screen.
+
+15. College Home Screen
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(
+  home: Scaffold(
+    appBar: AppBar(title: Text("COER University")),
+    body: Center(
+      child: Column(
+        children: [
+          Icon(Icons.school, size: 80),
+          Text("COER University"),
+          Text("Home"),
+          Text("Courses"),
+          Text("Admissions"),
+          Text("Contact"),
+        ],
+      ),
+    ),
+  ),
+));
+
+Output:
+
+COER University
+Home
+Courses
+Admissions
+Contact
