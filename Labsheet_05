@@ -1,0 +1,354 @@
+1. ListView
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView(
+    children: [
+      ListTile(title: Text("Apple")),
+      ListTile(title: Text("Banana")),
+      ListTile(title: Text("Mango")),
+      ListTile(title: Text("Orange")),
+      ListTile(title: Text("Grapes")),
+    ],
+  ),
+)));
+
+Output: Apple, Banana, Mango, Orange, Grapes
+
+2. ListTile
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView(
+    children: [
+      ListTile(
+        leading: Icon(Icons.person),
+        title: Text("Abdul"),
+        subtitle: Text("BCA Student"),
+      ),
+      ListTile(
+        leading: Icon(Icons.person),
+        title: Text("Palak"),
+        subtitle: Text("BCA Student"),
+      ),
+    ],
+  ),
+)));
+
+Output: Icon + Name + Subtitle
+
+3. Numbers 1 to 100
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView.builder(
+    itemCount: 100,
+    itemBuilder: (context, i) => ListTile(
+      title: Text("${i + 1}"),
+    ),
+  ),
+)));
+
+Output: 1, 2, 3 ... 100
+
+4. Names using ListView.builder
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView.builder(
+    itemCount: names.length,
+    itemBuilder: (context, i) => ListTile(
+      title: Text(names[i]),
+    ),
+  ),
+)));
+
+List<String> names = ["Abdul", "Pooja", "Rahul", "Nidhi", "Palak"];
+
+Output: Abdul, Pooja, Rahul, Nidhi, Palak
+
+5. ListView.separated
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView.separated(
+    itemCount: 5,
+    itemBuilder: (context, i) => ListTile(
+      title: Text("Item ${i + 1}"),
+    ),
+    separatorBuilder: (context, i) => Divider(),
+  ),
+)));
+
+Output: Items separated by lines.
+
+6. Horizontal List
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView(
+    scrollDirection: Axis.horizontal,
+    children: [
+      Text("  Apple  "),
+      Text("  Banana  "),
+      Text("  Mango  "),
+      Text("  Orange  "),
+    ],
+  ),
+)));
+
+Output: Horizontally scrolling items.
+
+7. GridView.count
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: GridView.count(
+    crossAxisCount: 3,
+    children: [
+      Icon(Icons.home, size: 50),
+      Icon(Icons.person, size: 50),
+      Icon(Icons.star, size: 50),
+      Icon(Icons.phone, size: 50),
+      Icon(Icons.email, size: 50),
+      Icon(Icons.settings, size: 50),
+    ],
+  ),
+)));
+
+Output: Grid of 6 icons.
+
+8. GridView.builder
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: GridView.builder(
+    itemCount: 8,
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+    ),
+    itemBuilder: (context, i) => Container(
+      margin: EdgeInsets.all(5),
+      color: Colors.blue,
+      child: Center(child: Text("Box ${i + 1}")),
+    ),
+  ),
+)));
+
+Output: Grid of 8 colored boxes.
+
+9. Product Model Class
+import 'package:flutter/material.dart';
+
+class Product {
+  String name;
+  double price;
+
+  Product(this.name, this.price);
+}
+
+List<Product> products = [
+  Product("Laptop", 50000),
+  Product("Mobile", 20000),
+  Product("Mouse", 500),
+];
+
+void main() => runApp(MaterialApp(home: Scaffold(
+  body: ListView.builder(
+    itemCount: products.length,
+    itemBuilder: (context, i) => ListTile(
+      title: Text(products[i].name),
+      subtitle: Text("₹${products[i].price}"),
+    ),
+  ),
+)));
+
+Output:
+
+Laptop    ₹50000
+Mobile    ₹20000
+Mouse     ₹500
+10. StatelessWidget and StatefulWidget
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int count = 0;
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        Text("Stateless: Hello"),
+        Text("Stateful: $count"),
+        ElevatedButton(
+          onPressed: () => setState(() => count++),
+          child: Text("Change"),
+        ),
+      ],
+    ),
+  );
+}
+
+Output: Stateless text remains fixed; Stateful text changes.
+
+11. Counter using setState()
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int count = 0;
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text("$count"),
+          ElevatedButton(
+            onPressed: () => setState(() => count++),
+            child: Text("Increment"),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Output: 0 → 1 → 2 → 3
+
+12. Increment, Decrement and Reset
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int count = 0;
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          Text("$count"),
+          ElevatedButton(
+            onPressed: () => setState(() => count++),
+            child: Text("Increment"),
+          ),
+          ElevatedButton(
+            onPressed: () => setState(() => count--),
+            child: Text("Decrement"),
+          ),
+          ElevatedButton(
+            onPressed: () => setState(() => count = 0),
+            child: Text("Reset"),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Output: Counter with Increment, Decrement and Reset.
+
+13. Add New Item
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController c = TextEditingController();
+  List<String> items = ["Apple", "Mango"];
+
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: [
+        TextField(controller: c),
+        ElevatedButton(
+          onPressed: () => setState(() {
+            items.add(c.text);
+            c.clear();
+          }),
+          child: Text("Add"),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, i) => ListTile(title: Text(items[i])),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Output: Type item → Add → item appears in list.
+
+14. Delete Item
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<String> items = ["Apple", "Mango", "Banana"];
+
+  Widget build(BuildContext context) => Scaffold(
+    body: ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, i) => ListTile(
+        title: Text(items[i]),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () => setState(() => items.removeAt(i)),
+        ),
+      ),
+    ),
+  );
+}
+
+Output: Tap delete icon → item is removed.
+
+15. Dismissible
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyApp()));
+
+class MyApp extends StatefulWidget {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<String> items = ["Apple", "Mango", "Banana"];
+
+  Widget build(BuildContext context) => Scaffold(
+    body: ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, i) => Dismissible(
+        key: Key(items[i]),
+        onDismissed: (_) => setState(() => items.removeAt(i)),
+        child: ListTile(title: Text(items[i])),
+      ),
+    ),
+  );
+}
+
+Output: Swipe an item → item is removed.
