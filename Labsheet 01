@@ -1,0 +1,222 @@
+1. Display Name, Course, College and Semester
+void main() {
+  print("Name: Abdul Malik");
+  print("Course: BCA");
+  print("College: COER University");
+  print("Semester: 5th");
+}
+
+Output:
+
+Name: Abdul Malik
+Course: BCA
+College: COER University
+Semester: 5th
+2. Different Data Types
+void main() {
+  int age = 21;
+  double marks = 85.5;
+  String name = "Abdul";
+  bool pass = true;
+
+  print(age);
+  print(marks);
+  print(name);
+  print(pass);
+}
+
+Output:
+
+21
+85.5
+Abdul
+true
+3. var, final and const
+void main() {
+  var name = "Abdul";
+  final age = 21;
+  const pi = 3.14;
+
+  print(name);
+  print(age);
+  print(pi);
+}
+
+Output:
+
+Abdul
+21
+3.14
+4. Sum, Difference, Product and Quotient
+void main() {
+  int a = 10, b = 5;
+
+  print("Sum: ${a + b}");
+  print("Difference: ${a - b}");
+  print("Product: ${a * b}");
+  print("Quotient: ${a / b}");
+}
+
+Output:
+
+Sum: 15
+Difference: 5
+Product: 50
+Quotient: 2.0
+5. Area and Perimeter of Rectangle
+void main() {
+  double l = 10, w = 5;
+
+  print("Area: ${l * w}");
+  print("Perimeter: ${2 * (l + w)}");
+}
+
+Output:
+
+Area: 50.0
+Perimeter: 30.0
+6. Area of Circle
+void main() {
+  double r = 5;
+  double area = 3.14 * r * r;
+
+  print("Area of Circle: $area");
+}
+
+Output:
+
+Area of Circle: 78.5
+7. Celsius to Fahrenheit
+void main() {
+  double c = 25;
+  double f = (c * 9 / 5) + 32;
+
+  print("Fahrenheit: $f");
+}
+
+Output:
+
+Fahrenheit: 77.0
+8. Swap Two Variables
+void main() {
+  int a = 10, b = 20;
+
+  int temp = a;
+  a = b;
+  b = temp;
+
+  print("a = $a");
+  print("b = $b");
+}
+
+Output:
+
+a = 20
+b = 10
+9. Positive, Negative or Zero
+void main() {
+  int n = -5;
+
+  if (n > 0)
+    print("Positive");
+  else if (n < 0)
+    print("Negative");
+  else
+    print("Zero");
+}
+
+Output:
+
+Negative
+10. Even or Odd
+void main() {
+  int n = 8;
+
+  if (n % 2 == 0)
+    print("Even");
+  else
+    print("Odd");
+}
+
+Output:
+
+Even
+11. Largest of Two Numbers
+void main() {
+  int a = 20, b = 15;
+
+  if (a > b)
+    print("$a is largest");
+  else
+    print("$b is largest");
+}
+
+Output:
+
+20 is largest
+12. Largest of Three Numbers
+void main() {
+  int a = 10, b = 25, c = 15;
+
+  if (a > b && a > c)
+    print("Largest: $a");
+  else if (b > c)
+    print("Largest: $b");
+  else
+    print("Largest: $c");
+}
+
+Output:
+
+Largest: 25
+13. Leap Year
+void main() {
+  int year = 2024;
+
+  if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+    print("Leap Year");
+  else
+    print("Not a Leap Year");
+}
+
+Output:
+
+Leap Year
+14. Calculate Grade
+void main() {
+  int marks = 85;
+
+  if (marks >= 90)
+    print("Grade A+");
+  else if (marks >= 80)
+    print("Grade A");
+  else if (marks >= 70)
+    print("Grade B");
+  else if (marks >= 60)
+    print("Grade C");
+  else
+    print("Grade F");
+}
+
+Output:
+
+Grade A
+15. Print 1 to 10 Using for Loop
+void main() {
+  for (int i = 1; i <= 10; i++) {
+    print(i);
+  }
+}
+
+Output:
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
