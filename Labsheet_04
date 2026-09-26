@@ -1,0 +1,492 @@
+1. Two Screens using ElevatedButton
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: First()));
+
+class First extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Second()),
+        ),
+        child: Text("Go to Second"),
+      ),
+    ),
+  );
+}
+
+class Second extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Second Screen")),
+    body: Center(child: Text("Welcome")),
+  );
+}
+
+Output: First Screen → Go to Second → Second Screen
+
+2. Home and About Screen
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Home")),
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => About()),
+        ),
+        child: Text("About"),
+      ),
+    ),
+  );
+}
+
+class About extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("About")),
+    body: Center(child: Text("About Screen")),
+  );
+}
+
+Output: Home → About
+
+3. Home, Profile and Settings
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Profile()),
+            ),
+            child: Text("Profile"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Settings()),
+            ),
+            child: Text("Settings"),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class Profile extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("Profile")));
+}
+
+class Settings extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("Settings")));
+}
+
+Output: Home → Profile / Settings
+
+4. Login → Home
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Login()));
+
+class Login extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => Home()),
+        ),
+        child: Text("Login"),
+      ),
+    ),
+  );
+}
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("Home Screen")));
+}
+
+Output: Login → Home Screen
+
+5. Home → Profile
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Profile()),
+        ),
+        child: Text("Open Profile"),
+      ),
+    ),
+  );
+}
+
+class Profile extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("Profile Screen")));
+}
+
+Output: Home → Profile
+
+6. Navigator.push()
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Next()),
+        ),
+        child: Text("Next"),
+      ),
+    ),
+  );
+}
+
+class Next extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("New Screen")));
+}
+
+Output: Next → New Screen
+
+7. Navigator.pop()
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: First()));
+
+class First extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Second()),
+        ),
+        child: Text("Open"),
+      ),
+    ),
+  );
+}
+
+class Second extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        child: Text("Back"),
+      ),
+    ),
+  );
+}
+
+Output: First → Second → First
+
+8. Home and Detail Navigation
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Detail()),
+        ),
+        child: Text("Details"),
+      ),
+    ),
+  );
+}
+
+class Detail extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        child: Text("Back"),
+      ),
+    ),
+  );
+}
+
+Output: Home → Detail → Back → Home
+
+9. BottomNavigationBar
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Main()));
+
+class Main extends StatefulWidget {
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  int i = 0;
+
+  final pages = [
+    Center(child: Text("Home")),
+    Center(child: Text("Profile")),
+    Center(child: Text("Settings")),
+  ];
+
+  Widget build(BuildContext context) => Scaffold(
+    body: pages[i],
+    bottomNavigationBar: BottomNavigationBar(
+      currentIndex: i,
+      onTap: (x) => setState(() => i = x),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+      ],
+    ),
+  );
+}
+
+Output: Bottom bar with Home, Profile, Settings.
+
+10. BottomNavigationBar – Three Screens
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Main()));
+
+class Main extends StatefulWidget {
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  int index = 0;
+
+  Widget build(BuildContext context) {
+    List<Widget> screens = [
+      Center(child: Text("Home Screen")),
+      Center(child: Text("Search Screen")),
+      Center(child: Text("Profile Screen")),
+    ];
+
+    return Scaffold(
+      body: screens[index],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: index,
+        onTap: (x) => setState(() => index = x),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+    );
+  }
+}
+
+Output: Home / Search / Profile screens.
+
+11. Navigation Drawer
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Home")),
+    drawer: Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(child: Text("Menu")),
+          ListTile(title: Text("Home")),
+          ListTile(title: Text("Profile")),
+          ListTile(title: Text("About")),
+          ListTile(title: Text("Settings")),
+        ],
+      ),
+    ),
+    body: Center(child: Text("Home Screen")),
+  );
+}
+
+Output: Drawer with Home, Profile, About and Settings.
+
+12. Drawer Screen Navigation
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Home")),
+    drawer: Drawer(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("Profile"),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Profile()),
+            ),
+          ),
+          ListTile(
+            title: Text("About"),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => About()),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class Profile extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("Profile")));
+}
+
+class About extends StatelessWidget {
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text("About")));
+}
+
+Output: Drawer → Profile / About.
+
+13. Drawer with Icons
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Home")),
+    drawer: Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(child: Text("Menu")),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Home"),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text("Profile"),
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text("About"),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("Settings"),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Output: Drawer with icons and menu names.
+
+14. Home, Courses, Contact
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Main()));
+
+class Main extends StatefulWidget {
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  int i = 0;
+
+  Widget build(BuildContext context) {
+    List<Widget> pages = [
+      Center(child: Text("Home")),
+      Center(child: Text("Courses")),
+      Center(child: Text("Contact")),
+    ];
+
+    return Scaffold(
+      body: pages[i],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: i,
+        onTap: (x) => setState(() => i = x),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Courses"),
+          BottomNavigationBarItem(icon: Icon(Icons.phone), label: "Contact"),
+        ],
+      ),
+    );
+  }
+}
+
+Output: Home / Courses / Contact.
+
+15. Student Profile, Attendance, Result
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: Home()));
+
+class Home extends StatelessWidget {
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Student")),
+    body: Center(
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Profile()),
+            ),
+            child: Text("Student Profile"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Attendance()),
+            ),
+            child: Text("Attendance"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Result()),
+            ),
+            child: Text("Result"),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Output:
+Student Profile → Profile Screen
+Attendance → Attendance Screen
+Result → Result Screen
