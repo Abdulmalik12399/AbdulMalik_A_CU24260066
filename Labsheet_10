@@ -1,0 +1,188 @@
+1. Initialize Firebase
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MaterialApp(home: Scaffold(
+    body: Center(child: Text('Firebase Connected')),
+  )));
+}
+
+
+2. Register New User
+await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  email: emailController.text,
+  password: passwordController.text,
+);
+print('Registration successful');
+
+
+3. Login User
+await FirebaseAuth.instance.signInWithEmailAndPassword(
+  email: emailController.text,
+  password: passwordController.text,
+);
+print('Login successful');
+
+
+4. Display Email and Logout
+Text(FirebaseAuth.instance.currentUser?.email ?? 'No user');
+
+ElevatedButton(
+  onPressed: () => FirebaseAuth.instance.signOut(),
+  child: Text('Logout'),
+);
+
+
+5. Display Authentication Errors
+try {
+  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: emailController.text,
+    password: passwordController.text,
+  );
+} on FirebaseAuthException catch (e) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(e.message ?? 'Authentication failed')),
+  );
+}
+
+
+6. Reset Password
+await FirebaseAuth.instance.sendPasswordResetEmail(
+  email: emailController.text,
+);
+print('Password reset email sent');
+
+
+7. Login State Using authStateChanges()
+StreamBuilder<User?>(
+  stream: FirebaseAuth.instance.authStateChanges(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    }
+    return snapshot.hasData ? HomeScreen() : LoginScreen();
+  },
+);
+
+
+8. Add Student to Firestore
+await FirebaseFirestore.instance.collection('students').add({
+  'name': 'Rahul',
+  'roll': '101',
+  'course': 'BCA',
+});
+
+
+9. Display Students in Real Time
+StreamBuilder(
+  stream: FirebaseFirestore.instance
+      .collection('students').snapshots(),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+
+    var docs = snapshot.data!.docs;
+    return ListView.builder(
+      itemCount: docs.length,
+      itemBuilder: (context, i) => ListTile(
+        title: Text(docs[i]['name']),
+        subtitle: Text(docs[i]['course']),
+      ),
+    );
+  },
+);
+
+
+10. Update Student Record
+await FirebaseFirestore.instance
+    .collection('students')
+    .doc(studentId)
+    .update({'name': 'Amit'});
+
+
+11. Delete Student Record
+await FirebaseFirestore.instance
+    .collection('students')
+    .doc(studentId)
+    .delete();
+
+
+12. Display Students by Course
+var result = await FirebaseFirestore.instance
+    .collection('students')
+    .where('course', isEqualTo: 'BCA')
+    .get();
+
+for (var doc in result.docs) {
+  print(doc.data());
+}
+
+
+13. Sort Students by Name
+var result = await FirebaseFirestore.instance
+    .collection('students')
+    .orderBy('name')
+    .get();
+
+for (var doc in result.docs) {
+  print(doc['name']);
+}
+
+
+14. Notes App — Add, View and Delete
+final notes = FirebaseFirestore.instance.collection('notes');
+
+// Add note
+await notes.add({
+  'title': 'Flutter',
+  'content': 'Learn Firebase',
+  'userId': FirebaseAuth.instance.currentUser!.uid,
+});
+
+// View user's notes
+StreamBuilder(
+  stream: notes
+      .where('userId',
+          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .snapshots(),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+    return ListView(
+      children: snapshot.data!.docs.map((doc) =>
+        ListTile(
+          title: Text(doc['title']),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => doc.reference.delete(),
+          ),
+        ),
+      ).toList(),
+    );
+  },
+);
+
+
+15. Student Management Application
+Use Firebase Authentication for login and Cloud Firestore for CRUD operations.
+final students =
+    FirebaseFirestore.instance.collection('students');
+
+// Add
+await students.add({
+  'name': nameController.text,
+  'roll': rollController.text,
+  'course': courseController.text,
+  'userId': FirebaseAuth.instance.currentUser!.uid,
+});
+
+// View
+students
+    .where('userId',
+        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+    .snapshots();
+
+// Update
+await students.doc(studentId).update({
+  'name': nameController.text,
+});
