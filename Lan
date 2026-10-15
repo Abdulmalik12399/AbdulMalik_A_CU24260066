@@ -1,0 +1,284 @@
+1. Notes App — Add and Display Notes
+await db.insert('notes', {
+  'title': 'Flutter',
+  'content': 'Learn SQLite'
+});
+
+List<Map<String, dynamic>> notes = await db.query('notes');
+
+ListView.builder(
+  itemCount: notes.length,
+  itemBuilder: (context, i) => ListTile(
+    title: Text(notes[i]['title']),
+    subtitle: Text(notes[i]['content']),
+  ),
+);
+
+
+Table:
+await db.execute(
+  'CREATE TABLE notes(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT)'
+);
+
+
+2. Edit Note on Tap
+onTap: () async {
+  await db.update(
+    'notes',
+    {'title': 'Updated Note', 'content': 'Updated content'},
+    where: 'id = ?',
+    whereArgs: [notes[i]['id']],
+  );
+}
+
+
+3. Delete Note by Swiping
+Dismissible(
+  key: Key(notes[i]['id'].toString()),
+  onDismissed: (_) async {
+    await db.delete('notes',
+        where: 'id = ?', whereArgs: [notes[i]['id']]);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Note deleted')),
+    );
+  },
+  child: ListTile(title: Text(notes[i]['title'])),
+);
+
+
+4. Search Notes by Title
+var result = await db.query(
+  'notes',
+  where: 'title LIKE ?',
+  whereArgs: ['%${searchController.text}%'],
+);
+
+
+5. Contact Book — Add and Display Contacts
+await db.execute(
+  'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, phone TEXT)'
+);
+
+await db.insert('contacts', {
+  'name': 'Rahul',
+  'phone': '9876543210'
+});
+
+var contacts = await db.query('contacts');
+
+
+Display using ListView.builder() and ListTile.
+6. Delete Contact with Confirmation
+showDialog(
+  context: context,
+  builder: (_) => AlertDialog(
+    title: Text('Delete Contact?'),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: Text('Cancel'),
+      ),
+      TextButton(
+        onPressed: () async {
+          await db.delete('contacts',
+              where: 'id = ?', whereArgs: [id]);
+          Navigator.pop(context);
+        },
+        child: Text('Delete'),
+      ),
+    ],
+  ),
+);
+
+
+7. Search Contacts Using LIKE
+var result = await db.query(
+  'contacts',
+  where: 'name LIKE ?',
+  whereArgs: ['%${searchController.text}%'],
+);
+
+
+8. Expense Tracker — Add Expenses
+await db.execute(
+  'CREATE TABLE expenses(id INTEGER PRIMARY KEY, title TEXT, amount REAL)'
+);
+
+await db.insert('expenses', {
+  'title': 'Food',
+  'amount': 200.0
+});
+
+var expenses = await db.query('expenses');
+
+
+9. Calculate Total Expense
+var result = await db.rawQuery(
+  'SELECT SUM(amount) AS total FROM expenses'
+);
+
+double total = (result.first['total'] as num?)?.toDouble() ?? 0.0;
+print('Total Expense: ₹$total');
+
+
+10. To-Do App with Checkbox
+await db.execute(
+  'CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, completed INTEGER)'
+);
+
+CheckboxListTile(
+  title: Text(task['title']),
+  value: task['completed'] == 1,
+  onChanged: (value) async {
+    await db.update(
+      'tasks',
+      {'completed': value! ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [task['id']],
+    );
+  },
+);
+
+
+11. Registration App
+await db.execute(
+  'CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT)'
+);
+
+await db.insert('users', {
+  'name': nameController.text,
+  'email': emailController.text,
+  'password': passwordController.text,
+});
+
+
+For real applications, never store passwords as plain text; use a secure authentication system.
+12. Login App
+var result = await db.query(
+  'users',
+  where: 'email = ? AND password = ?',
+  whereArgs: [
+    emailController.text,
+    passwordController.text
+  ],
+);
+
+if (result.isNotEmpty) {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (_) => HomeScreen()));
+} else {
+  print('Invalid login');
+}
+
+
+Practical demonstration only; use secure password hashing or an authentication service in production.
+13. Form Validation Before Insert
+final formKey = GlobalKey<FormState>();
+
+Form(
+  key: formKey,
+  child: Column(
+    children: [
+      TextFormField(
+        validator: (v) =>
+            v == null || v.isEmpty ? 'Enter name' : null,
+      ),
+      TextFormField(
+        validator: (v) =>
+            v == null || !v.contains('@') ? 'Invalid email' : null,
+      ),
+      TextFormField(
+        obscureText: true,
+        validator: (v) =>
+            v == null || v.length < 6 ? 'Minimum 6 characters' : null,
+      ),
+      ElevatedButton(
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            print('Insert record into SQLite');
+          }
+        },
+        child: Text('Register'),
+      ),
+    ],
+  ),
+);
+
+
+14. Student List and Add/Edit Screens
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) => AddEditStudentScreen(),
+  ),
+);
+
+// Save student
+await db.insert('students', {
+  'name': nameController.text,
+  'roll': rollController.text,
+});
+
+
+Use Navigator.push() to open the Add/Edit screen and Navigator.pop() to return to the Student List after saving.
+15. Product Inventory App
+await db.execute(
+  'CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, quantity INTEGER, price REAL)'
+);
+
+// Add
+await db.insert('products', {
+  'name': 'Pen',
+  'quantity': 10,
+  'price': 15.0,
+});
+
+// Update
+await db.update('products', {
+  'quantity': 20
+}, where: 'id = ?', whereArgs: [1]);
+
+// Delete
+await db.delete('products',
+    where: 'id = ?', whereArgs: [1]);
+
+
+16. Shopping Cart with Total Price
+await db.execute(
+  'CREATE TABLE cart(id INTEGER PRIMARY KEY, name TEXT, quantity INTEGER, price REAL)'
+);
+
+await db.insert('cart', {
+  'name': 'Book',
+  'quantity': 2,
+  'price': 100.0,
+});
+
+var result = await db.rawQuery(
+  'SELECT SUM(quantity * price) AS total FROM cart'
+);
+
+double total = (result.first['total'] as num?)?.toDouble() ?? 0.0;
+print('Cart Total: ₹$total');
+
+
+17. Student Management Application
+Create four screens: Home, Add Student, Student List, and Update Student.
+// Add student
+await db.insert('students', {
+  'name': nameController.text,
+  'roll': rollController.text,
+  'course': courseController.text,
+});
+
+// Display students
+var students = await db.query('students');
+
+// Update student
+await db.update('students', {
+  'name': nameController.text,
+}, where: 'id = ?', whereArgs: [id]);
+
+// Delete after confirmation
+await db.delete('students',
+    where: 'id = ?', whereArgs: [id]);
