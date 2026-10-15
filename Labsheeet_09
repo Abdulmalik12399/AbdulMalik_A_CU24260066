@@ -1,0 +1,287 @@
+1. Parse JSON Array into Student Objects
+class Student {
+  String name;
+  int age;
+
+  Student(this.name, this.age);
+
+  factory Student.fromJson(Map<String, dynamic> json) =>
+      Student(json['name'], json['age']);
+}
+
+void main() {
+  String data = '[{"name":"Rahul","age":20}]';
+  List list = jsonDecode(data);
+  List<Student> students =
+      list.map((e) => Student.fromJson(e)).toList();
+  print(students[0].name);
+}
+
+
+Import dart:convert.
+2. Demonstrate Future, Async and Await
+Future<String> getData() async {
+  await Future.delayed(Duration(seconds: 2));
+  return "Data Loaded";
+}
+
+void main() async {
+  print(await getData());
+}
+
+
+3. Fetch API Response
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+void main() => runApp(MaterialApp(home: ApiPage()));
+
+class ApiPage extends StatelessWidget {
+  Future<String> fetchData() async {
+    var r = await http.get(
+      Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+    );
+    return r.body;
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: FutureBuilder(
+        future: fetchData(),
+        builder: (context, snapshot) =>
+            Text(snapshot.data ?? 'Loading...'),
+      ),
+    ),
+  );
+}
+
+
+4. Fetch a Single Post Using Card
+FutureBuilder(
+  future: http.get(
+    Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+  ),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+    var post = jsonDecode(snapshot.data!.body);
+    return Card(
+      child: ListTile(
+        title: Text(post['title']),
+        subtitle: Text(post['body']),
+      ),
+    );
+  },
+);
+
+
+Import dart:convert and package:http/http.dart as http.
+5. Display CircularProgressIndicator
+FutureBuilder(
+  future: http.get(Uri.parse(
+      'https://jsonplaceholder.typicode.com/posts/1')),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    }
+    if (snapshot.hasError) return Text('Error loading data');
+    return Text(snapshot.data!.body);
+  },
+);
+
+
+6. Display Data Using FutureBuilder
+Future<String> fetchData() async {
+  var r = await http.get(Uri.parse(
+      'https://jsonplaceholder.typicode.com/posts/1'));
+  return r.body;
+}
+
+FutureBuilder<String>(
+  future: fetchData(),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+    return Text(snapshot.data!);
+  },
+);
+
+
+7. Fetch Posts Using ListView.builder
+FutureBuilder(
+  future: http.get(Uri.parse(
+      'https://jsonplaceholder.typicode.com/posts')),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+    var posts = jsonDecode(snapshot.data!.body);
+    return ListView.builder(
+      itemCount: posts.length,
+      itemBuilder: (context, i) =>
+          ListTile(title: Text(posts[i]['title'])),
+    );
+  },
+);
+
+
+8. Fetch Users with CircleAvatar
+FutureBuilder(
+  future: http.get(Uri.parse(
+      'https://jsonplaceholder.typicode.com/users')),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+    var users = jsonDecode(snapshot.data!.body);
+    return ListView.builder(
+      itemCount: users.length,
+      itemBuilder: (context, i) => ListTile(
+        leading: CircleAvatar(child: Text(users[i]['name'][0])),
+        title: Text(users[i]['name']),
+        subtitle: Text(users[i]['email']),
+      ),
+    );
+  },
+);
+
+
+9. JSON Model Class
+class Post {
+  int id;
+  String title;
+
+  Post(this.id, this.title);
+
+  factory Post.fromJson(Map<String, dynamic> j) =>
+      Post(j['id'], j['title']);
+}
+
+// Convert API JSON:
+var posts = (jsonDecode(response.body) as List)
+    .map((e) => Post.fromJson(e)).toList();
+print(posts[0].title);
+
+
+10. API Error Handling with Retry Button
+Future<String> fetchData() async {
+  var r = await http.get(Uri.parse(
+      'https://jsonplaceholder.typicode.com/posts/1'));
+  if (r.statusCode == 200) return r.body;
+  throw Exception('Failed to load data');
+}
+
+// Inside StatefulWidget:
+Future<String>? future;
+
+@override
+void initState() {
+  super.initState();
+  future = fetchData();
+}
+
+// In build():
+FutureBuilder<String>(
+  future: future,
+  builder: (context, s) {
+    if (s.hasError) {
+      return Column(mainAxisSize: MainAxisSize.min, children: [
+        Text('Error: ${s.error}'),
+        ElevatedButton(
+          onPressed: () => setState(() => future = fetchData()),
+          child: Text('Retry'),
+        ),
+      ]);
+    }
+    if (!s.hasData) return CircularProgressIndicator();
+    return Text(s.data!);
+  },
+);
+
+
+11. User List and Detail Screen
+// Open details when a user is tapped:
+ListTile(
+  title: Text(user['name']),
+  onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => Scaffold(
+        appBar: AppBar(title: Text('User Details')),
+        body: Text(
+          '${user['name']}\n${user['email']}\n${user['phone']}\n${user['website']}',
+        ),
+      ),
+    ),
+  ),
+);
+
+
+Fetch users from https://jsonplaceholder.typicode.com/users.
+12. Search API Data
+TextField(
+  onChanged: (value) => setState(() => search = value),
+  decoration: InputDecoration(hintText: 'Search posts'),
+);
+
+// Filter posts:
+var filtered = posts.where((p) =>
+    p['title'].toString().toLowerCase()
+        .contains(search.toLowerCase())).toList();
+
+
+Declare String search = ''; in your State class.
+13. Pull-to-Refresh
+RefreshIndicator(
+  onRefresh: () async {
+    setState(() => future = fetchData());
+    await future;
+  },
+  child: ListView(
+    physics: AlwaysScrollableScrollPhysics(),
+    children: [Text('Pull down to refresh')],
+  ),
+);
+
+
+Use a refreshable list containing your fetched data in a complete application.
+14. Send Data Using http.post()
+var response = await http.post(
+  Uri.parse('https://jsonplaceholder.typicode.com/posts'),
+  headers: {'Content-Type': 'application/json; charset=UTF-8'},
+  body: jsonEncode({
+    'title': titleController.text,
+    'body': bodyController.text,
+    'userId': 1,
+  }),
+);
+
+print(response.body);
+
+
+The endpoint simulates creating a post; it does not permanently save it.
+15. Product Store Application
+Fetch products from https://fakestoreapi.com/products.
+FutureBuilder(
+  future: http.get(Uri.parse(
+      'https://fakestoreapi.com/products')),
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) return CircularProgressIndicator();
+    if (snapshot.hasError) return Text('Error loading products');
+
+    var products = jsonDecode(snapshot.data!.body);
+
+    return GridView.builder(
+      itemCount: products.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.7,
+      ),
+      itemBuilder: (context, i) => Card(
+        child: Column(children: [
+          Expanded(
+            child: Image.network(products[i]['image']),
+          ),
+          Text(products[i]['title'],
+              maxLines: 2, overflow: TextOverflow.ellipsis),
+ Text('\$${products[i]['price']}'),
+        ]),
+      ),
+    );
+  },
+);
