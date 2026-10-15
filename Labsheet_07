@@ -1,0 +1,220 @@
+1. Create SQLite Database
+var db = await openDatabase(
+  'student.db',
+  version: 1,
+  onCreate: (db, version) async {},
+);
+print("Database created successfully");
+
+
+2. Create Students Table
+await db.execute('''
+CREATE TABLE students(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT,
+roll TEXT,
+course TEXT)
+''');
+
+
+3. Insert Student Using insert()
+await db.insert('students', {
+  'name': 'Rahul',
+  'roll': '101',
+  'course': 'BCA'
+});
+
+
+4. Insert Record Using TextFields
+final name = TextEditingController();
+final roll = TextEditingController();
+final course = TextEditingController();
+
+ElevatedButton(
+  onPressed: () async {
+    await db.insert('students', {
+      'name': name.text,
+      'roll': roll.text,
+      'course': course.text,
+    });
+    print('Student inserted');
+  },
+  child: Text('Insert'),
+);
+
+
+5. Insert Using rawInsert()
+await db.rawInsert(
+  'INSERT INTO students(name, roll, course) VALUES(?, ?, ?)',
+  ['Aman', '102', 'BCA'],
+);
+
+
+6. Display Records Using query() and ListView
+List<Map<String, dynamic>> students =
+    await db.query('students');
+
+ListView.builder(
+  itemCount: students.length,
+  itemBuilder: (context, index) {
+    return ListTile(
+      title: Text(students[index]['name']),
+      subtitle: Text(students[index]['roll']),
+    );
+  },
+);
+
+
+7. Display Records Using rawQuery()
+List<Map<String, dynamic>> students =
+    await db.rawQuery('SELECT * FROM students');
+
+print(students);
+
+
+8. Update Student Record
+await db.update(
+  'students',
+  {'name': 'Amit'},
+  where: 'id = ?',
+  whereArgs: [1],
+);
+
+
+9. Delete Student Record
+await db.delete(
+  'students',
+  where: 'id = ?',
+  whereArgs: [1],
+);
+
+
+10. Delete All Records
+ElevatedButton(
+  onPressed: () async {
+    await db.delete('students');
+    print('All records deleted');
+  },
+  child: Text('Clear All'),
+);
+
+
+11. Search Student by Roll Number
+var result = await db.query(
+  'students',
+  where: 'roll = ?',
+  whereArgs: ['101'],
+);
+print(result);
+
+
+12. Display Students by Selected Course
+var result = await db.query(
+  'students',
+  where: 'course = ?',
+  whereArgs: ['BCA'],
+);
+print(result);
+
+
+13. Display Students in Ascending Name Order
+var result = await db.query(
+  'students',
+  orderBy: 'name ASC',
+);
+print(result);
+
+
+14. Count Total Student Records
+var result = await db.rawQuery(
+  'SELECT COUNT(*) AS total FROM students',
+);
+print(result.first['total']);
+
+
+15. Student Model Class
+class Student {
+  int? id;
+  String name, roll, course;
+
+  Student(this.name, this.roll, this.course, {this.id});
+
+  Map<String, dynamic> toMap() => {
+    'id': id,
+    'name': name,
+    'roll': roll,
+    'course': course,
+  };
+
+  factory Student.fromMap(Map<String, dynamic> map) {
+    return Student(
+      map['name'],
+      map['roll'],
+      map['course'],
+      id: map['id'],
+    );
+  }
+}
+
+
+Usage:
+await db.insert('students',
+    Student('Rahul', '101', 'BCA').toMap());
+
+var rows = await db.query('students');
+var students = rows.map((e) => Student.fromMap(e)).toList();
+
+
+16. DatabaseHelper Class
+class DatabaseHelper {
+  static Future<Database> openDB() async {
+    return openDatabase(
+      'student.db',
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute(
+          'CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, roll TEXT, course TEXT)',
+        );
+      },
+    );
+  }
+
+  static Future<int> insert(Map<String, dynamic> data) async {
+    final db = await openDB();
+    return db.insert('students', data);
+  }
+
+  static Future<List<Map<String, dynamic>>> read() async {
+    final db = await openDB();
+    return db.query('students');
+  }
+
+  static Future<int> update(int id, Map<String, dynamic> data) async {
+    final db = await openDB();
+    return db.update('students', data,
+        where: 'id = ?', whereArgs: [id]);
+  }
+
+  static Future<int> delete(int id) async {
+    final db = await openDB();
+    return db.delete('students',
+        where: 'id = ?', whereArgs: [id]);
+  }
+}
+
+
+17. Student Record Management Application
+Use the Student model and DatabaseHelper from Questions 15–16.
+// Add student
+await DatabaseHelper.insert(
+  Student('Rahul', '101', 'BCA').toMap(),
+);
+
+// View students
+var students = await DatabaseHelper.read();
+
+// Update student
+await DatabaseHelper.update(1, {'name': 'Amit'});
+
+// Delete student
+await DatabaseHelper.delete(1);
